@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.android.fifaapp.fragment.HomeFragment"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/jogadoresFragment"
+        android:name="com.android.fifaapp.fragment.JogadoresFragment"
+        tools:layout="@layout/fragment_jogadores" />
+
+    <fragment
+        android:id="@+id/partidasFragment"
+        android:name="com.android.fifaapp.fragment.PartidasFragment"
+        tools:layout="@layout/fragment_partidas" />
+</navigation>
