@@ -90,12 +90,13 @@ public class PartidasFragment extends Fragment {
 
         // Configuração do botão Buscar partidas de um jogador específico
         buscar.setOnClickListener(v -> {
-            Jogador j = db.jogadorDao().buscarPorNickname(filtro.getText().toString());
+            String textoBusca = filtro.getText().toString();
+            Jogador j = db.jogadorDao().buscarPorNomeOuNickname(textoBusca);
             if (j != null) {
                 List<Partida> partidas = db.partidaDao().listarPorJogador(j.idJogador);
                 ArrayAdapter<String> partidasAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1);
                 for (Partida p : partidas) {
-                    partidasAdapter.add("" + p.data + " - " + p.placarJogador1 + " x " + p.placarJogador2);
+                    partidasAdapter.add(p.data + " - " + p.placarJogador1 + " x " + p.placarJogador2);
                 }
                 listaPartidas.setAdapter(partidasAdapter);
             } else {

@@ -70,7 +70,7 @@ public class JogadoresFragment extends Fragment {
 
         // Atualizar
         atualizar.setOnClickListener(v -> {
-            Jogador j = db.jogadorDao().buscarPorNickname(nickname.getText().toString());
+            Jogador j = db.jogadorDao().buscarPorNomeOuNickname(nickname.getText().toString());
             if (j != null) {
                 j.nome = nome.getText().toString();
                 j.email = email.getText().toString();
@@ -83,7 +83,7 @@ public class JogadoresFragment extends Fragment {
 
         // Deletar
         deletar.setOnClickListener(v -> {
-            Jogador j = db.jogadorDao().buscarPorNickname(nickname.getText().toString());
+            Jogador j = db.jogadorDao().buscarPorNomeOuNickname(nickname.getText().toString());
             if (j != null) {
                 db.jogadorDao().deletar(j);
                 Toast.makeText(getContext(), "Jogador deletado", Toast.LENGTH_SHORT).show();

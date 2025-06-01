@@ -23,6 +23,6 @@ public interface JogadorDao {
     @Query("SELECT * FROM Jogador")
     List<Jogador> listarTodos();
 
-    @Query("SELECT * FROM Jogador WHERE nickname = :nickname LIMIT 1")
-    Jogador buscarPorNickname(String nickname);
+    @Query("SELECT * FROM Jogador WHERE nickname = :texto OR nome = :texto LIMIT 1")
+    Jogador buscarPorNomeOuNickname(String texto);
 }
