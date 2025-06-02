@@ -22,6 +22,7 @@ public class JogadoresFragment extends Fragment {
     private Button salvar, atualizar, deletar;
     private ListView listaJogadores;
     private ArrayAdapter<String> adapter;
+    private List<Jogador> listaTodosJogadores;
 
     private CampeonatoDatabase db;
 
@@ -56,6 +57,18 @@ public class JogadoresFragment extends Fragment {
         // Listar jogadores
         carregarJogadores();
 
+        // Configurar clique na lista
+        listaJogadores.setOnItemClickListener((parent, view1, position, id) -> {
+            // Obter o jogador selecionado
+            Jogador jogadorSelecionado = listaTodosJogadores.get(position);
+
+            // Preencher os campos com os dados do jogador
+            nome.setText(jogadorSelecionado.nome);
+            nickname.setText(jogadorSelecionado.nickname);
+            email.setText(jogadorSelecionado.email);
+            dataNascimento.setText(jogadorSelecionado.dataNascimento);
+        });
+
         // Salvar
         salvar.setOnClickListener(v -> {
             Jogador j = new Jogador();
@@ -66,6 +79,7 @@ public class JogadoresFragment extends Fragment {
             db.jogadorDao().inserir(j);
             Toast.makeText(getContext(), "Jogador salvo", Toast.LENGTH_SHORT).show();
             carregarJogadores();
+            limparCampos();
         });
 
         // Atualizar
@@ -78,6 +92,7 @@ public class JogadoresFragment extends Fragment {
                 db.jogadorDao().atualizar(j);
                 Toast.makeText(getContext(), "Jogador atualizado", Toast.LENGTH_SHORT).show();
                 carregarJogadores();
+                limparCampos();
             }
         });
 
@@ -88,16 +103,24 @@ public class JogadoresFragment extends Fragment {
                 db.jogadorDao().deletar(j);
                 Toast.makeText(getContext(), "Jogador deletado", Toast.LENGTH_SHORT).show();
                 carregarJogadores();
+                limparCampos();
             }
         });
     }
 
     private void carregarJogadores() {
-        List<Jogador> jogadores = db.jogadorDao().listarTodos();
+        listaTodosJogadores = db.jogadorDao().listarTodos();
         adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1);
-        for (Jogador j : jogadores) {
+        for (Jogador j : listaTodosJogadores) {
             adapter.add(j.nickname + " - " + j.nome);
         }
         listaJogadores.setAdapter(adapter);
+    }
+
+    private void limparCampos() {
+        nome.setText("");
+        nickname.setText("");
+        email.setText("");
+        dataNascimento.setText("");
     }
 }

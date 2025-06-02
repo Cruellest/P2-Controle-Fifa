@@ -11,7 +11,6 @@ import com.android.fifaapp.database.CampeonatoDatabase;
 import com.android.fifaapp.entity.Jogador;
 import com.android.fifaapp.entity.Partida;
 import java.util.Locale;
-
 import java.util.List;
 
 public class PartidasFragment extends Fragment {
@@ -22,13 +21,15 @@ public class PartidasFragment extends Fragment {
     CampeonatoDatabase db;
     List<Jogador> jogadores;
     Integer idPartidaSelecionada = null;
+    List<Partida> listaPartidasAtual;
+    ArrayAdapter<Partida> partidasAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_partidas, container, false);
 
-        // Inicializando os componentes da UI conforme XML
+        // Inicializando os componentes da UI
         data = view.findViewById(R.id.etDataPartida);
         placar1 = view.findViewById(R.id.etPlacarJogador1);
         placar2 = view.findViewById(R.id.etPlacarJogador2);
@@ -38,188 +39,197 @@ public class PartidasFragment extends Fragment {
         btnAtualizar = view.findViewById(R.id.btnAtualizarPartida);
         btnExcluir = view.findViewById(R.id.btnExcluirPartida);
         btnLimpar = view.findViewById(R.id.btnLimparPartida);
-
         filtro = view.findViewById(R.id.filtroNickname);
         buscar = view.findViewById(R.id.btnBuscar);
         btnListarTodas = view.findViewById(R.id.btnListarTodas);
         listaPartidas = view.findViewById(R.id.listViewPartidas);
 
-        // Inicializando o banco de dados e obtendo os jogadores
+        // Inicializando o banco de dados
         db = CampeonatoDatabase.getDatabase(requireContext());
         jogadores = db.jogadorDao().listarTodos();
 
-        // Configurando os Spinners com os jogadores disponíveis
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Configurando os Spinners
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         for (Jogador j : jogadores) {
-            adapter.add(j.nickname);
+            spinnerAdapter.add(j.nickname);
         }
-        spinnerJogador1.setAdapter(adapter);
-        spinnerJogador2.setAdapter(adapter);
+        spinnerJogador1.setAdapter(spinnerAdapter);
+        spinnerJogador2.setAdapter(spinnerAdapter);
 
-        // Configurando a lista de partidas
+        // Configurando o adapter da lista de partidas
+        partidasAdapter = new ArrayAdapter<Partida>(requireContext(), android.R.layout.simple_list_item_1) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+                TextView textView = (TextView) view.findViewById(android.R.id.text1);
+
+                Partida partida = getItem(position);
+                if (partida != null) {
+                    Jogador j1 = db.jogadorDao().buscarPorId(partida.idJogador1);
+                    Jogador j2 = db.jogadorDao().buscarPorId(partida.idJogador2);
+
+                    String texto = String.format(Locale.getDefault(), "%s - %s (%d) x (%d) %s",
+                            partida.data,
+                            j1 != null ? j1.nickname : "N/A",
+                            partida.placarJogador1,
+                            partida.placarJogador2,
+                            j2 != null ? j2.nickname : "N/A");
+
+                    textView.setText(texto);
+                }
+                return view;
+            }
+        };
+
+        listaPartidas.setAdapter(partidasAdapter);
+        carregarTodasPartidas();
+
+        // Configurando o clique na lista
         listaPartidas.setOnItemClickListener((parent, view1, position, id) -> {
-            List<Partida> partidas = db.partidaDao().listarTodas();
-
-            if (position < partidas.size()) {
-                Partida partida = partidas.get(position);
-                idPartidaSelecionada = partida.idPartida;
-
-                data.setText(partida.data);
-                placar1.setText(String.valueOf(partida.placarJogador1));
-                placar2.setText(String.valueOf(partida.placarJogador2));
-
-                for (int i = 0; i < jogadores.size(); i++) {
-                    if (jogadores.get(i).idJogador == partida.idJogador1) {
-                        spinnerJogador1.setSelection(i);
-                    }
-                    if (jogadores.get(i).idJogador == partida.idJogador2) {
-                        spinnerJogador2.setSelection(i);
-                    }
-                }
+            Partida partidaSelecionada = partidasAdapter.getItem(position);
+            if (partidaSelecionada != null) {
+                preencherCamposPartida(partidaSelecionada);
             }
         });
 
-        // Configuração do botão Salvar
-        btnSalvar.setOnClickListener(v -> {
-            int pos1 = spinnerJogador1.getSelectedItemPosition();
-            int pos2 = spinnerJogador2.getSelectedItemPosition();
-
-            if (pos1 == pos2) {
-                Toast.makeText(requireContext(), "Jogadores devem ser diferentes", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            String dataPartida = data.getText().toString();
-            String placar1Str = placar1.getText().toString();
-            String placar2Str = placar2.getText().toString();
-
-            if (dataPartida.isEmpty() || placar1Str.isEmpty() || placar2Str.isEmpty()) {
-                Toast.makeText(requireContext(), "Preencha todos os campos", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            Partida p = new Partida();
-            p.data = dataPartida;
-            p.idJogador1 = jogadores.get(pos1).idJogador;
-            p.idJogador2 = jogadores.get(pos2).idJogador;
-            p.placarJogador1 = Integer.parseInt(placar1Str);
-            p.placarJogador2 = Integer.parseInt(placar2Str);
-
-            db.partidaDao().inserir(p);
-            Toast.makeText(requireContext(), "Partida registrada", Toast.LENGTH_SHORT).show();
-
-            limparCampos();
-        });
-
+        // Configuração dos botões
+        btnSalvar.setOnClickListener(v -> salvarPartida());
+        btnAtualizar.setOnClickListener(v -> atualizarPartida());
+        btnExcluir.setOnClickListener(v -> excluirPartida());
         btnLimpar.setOnClickListener(v -> limparCampos());
-
-        // Configurando botão de atualizar partidas
-        btnAtualizar.setOnClickListener(v -> {
-            if (idPartidaSelecionada == null) {
-                Toast.makeText(requireContext(), "Nenhuma partida selecionada", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            String dataPartida = data.getText().toString();
-            String placar1Str = placar1.getText().toString();
-            String placar2Str = placar2.getText().toString();
-
-            if (dataPartida.isEmpty() || placar1Str.isEmpty() || placar2Str.isEmpty()) {
-                Toast.makeText(requireContext(), "Preencha todos os campos", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            int pos1 = spinnerJogador1.getSelectedItemPosition();
-            int pos2 = spinnerJogador2.getSelectedItemPosition();
-
-            if (pos1 == pos2) {
-                Toast.makeText(requireContext(), "Jogadores devem ser diferentes", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            Partida partidaAtualizada = new Partida();
-            partidaAtualizada.idPartida = idPartidaSelecionada;
-            partidaAtualizada.data = dataPartida;
-            partidaAtualizada.idJogador1 = jogadores.get(pos1).idJogador;
-            partidaAtualizada.idJogador2 = jogadores.get(pos2).idJogador;
-            partidaAtualizada.placarJogador1 = Integer.parseInt(placar1Str);
-            partidaAtualizada.placarJogador2 = Integer.parseInt(placar2Str);
-
-            db.partidaDao().atualizar(partidaAtualizada);
-            Toast.makeText(requireContext(), "Partida atualizada", Toast.LENGTH_SHORT).show();
-
-            limparCampos();
-        });
-
-        // Configurando botão de deletar partidas
-        btnExcluir.setOnClickListener(v -> {
-            if (idPartidaSelecionada == null) {
-                Toast.makeText(requireContext(), "Nenhuma partida selecionada", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            Partida partidaParaExcluir = new Partida();
-            partidaParaExcluir.idPartida = idPartidaSelecionada;
-
-            db.partidaDao().deletar(partidaParaExcluir);
-            Toast.makeText(requireContext(), "Partida excluída", Toast.LENGTH_SHORT).show();
-
-            limparCampos();
-        });
-
-
-        // Configuração do botão Buscar partidas de um jogador específico
-        buscar.setOnClickListener(v -> {
-            String textoBusca = filtro.getText().toString();
-            Jogador j = db.jogadorDao().buscarPorNomeOuNickname(textoBusca);
-            if (j != null) {
-                List<Partida> partidas = db.partidaDao().listarPorJogador(j.idJogador);
-                ArrayAdapter<String> partidasAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1);
-                for (Partida p : partidas) {
-                    partidasAdapter.add(p.data + " - " + p.placarJogador1 + " x " + p.placarJogador2);
-                }
-                listaPartidas.setAdapter(partidasAdapter);
-            } else {
-                Toast.makeText(requireContext(), "Jogador não encontrado", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        btnListarTodas.setOnClickListener(v -> {
-            List<Partida> partidas = db.partidaDao().listarTodas();
-            ArrayAdapter<String> partidasAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1);
-
-            for (Partida p : partidas) {
-                Jogador j1 = db.jogadorDao().buscarPorId(p.idJogador1);
-                Jogador j2 = db.jogadorDao().buscarPorId(p.idJogador2);
-
-                String item = String.format(
-                        Locale.getDefault(),
-                        "%s - %s (%d) x (%d) %s",
-                        p.data,
-                        j1 != null ? j1.nickname : "N/A",
-                        p.placarJogador1,
-                        p.placarJogador2,
-                        j2 != null ? j2.nickname : "N/A"
-                );
-
-                partidasAdapter.add(item);
-            }
-
-            listaPartidas.setAdapter(partidasAdapter);
-
-        });
-
+        buscar.setOnClickListener(v -> buscarPartidas());
+        btnListarTodas.setOnClickListener(v -> carregarTodasPartidas());
 
         return view;
     }
 
+    private void carregarTodasPartidas() {
+        listaPartidasAtual = db.partidaDao().listarTodas();
+        partidasAdapter.clear();
+        partidasAdapter.addAll(listaPartidasAtual);
+        partidasAdapter.notifyDataSetChanged();
+    }
+
+    private void preencherCamposPartida(Partida partida) {
+        idPartidaSelecionada = partida.idPartida;
+        data.setText(partida.data);
+        placar1.setText(String.valueOf(partida.placarJogador1));
+        placar2.setText(String.valueOf(partida.placarJogador2));
+
+        // Configurar os spinners
+        for (int i = 0; i < jogadores.size(); i++) {
+            if (jogadores.get(i).idJogador == partida.idJogador1) {
+                spinnerJogador1.setSelection(i);
+            }
+            if (jogadores.get(i).idJogador == partida.idJogador2) {
+                spinnerJogador2.setSelection(i);
+            }
+        }
+
+        // Atualizar estado dos botões
+        btnSalvar.setEnabled(false);
+        btnAtualizar.setEnabled(true);
+        btnExcluir.setEnabled(true);
+    }
+
+    private void salvarPartida() {
+        if (!validarCampos()) return;
+
+        Partida novaPartida = new Partida();
+        novaPartida.data = data.getText().toString();
+        novaPartida.idJogador1 = jogadores.get(spinnerJogador1.getSelectedItemPosition()).idJogador;
+        novaPartida.idJogador2 = jogadores.get(spinnerJogador2.getSelectedItemPosition()).idJogador;
+        novaPartida.placarJogador1 = Integer.parseInt(placar1.getText().toString());
+        novaPartida.placarJogador2 = Integer.parseInt(placar2.getText().toString());
+
+        db.partidaDao().inserir(novaPartida);
+        Toast.makeText(requireContext(), "Partida registrada", Toast.LENGTH_SHORT).show();
+
+        limparCampos();
+        carregarTodasPartidas();
+    }
+
+    private void atualizarPartida() {
+        if (idPartidaSelecionada == null) {
+            Toast.makeText(requireContext(), "Nenhuma partida selecionada", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!validarCampos()) return;
+
+        Partida partidaAtualizada = new Partida();
+        partidaAtualizada.idPartida = idPartidaSelecionada;
+        partidaAtualizada.data = data.getText().toString();
+        partidaAtualizada.idJogador1 = jogadores.get(spinnerJogador1.getSelectedItemPosition()).idJogador;
+        partidaAtualizada.idJogador2 = jogadores.get(spinnerJogador2.getSelectedItemPosition()).idJogador;
+        partidaAtualizada.placarJogador1 = Integer.parseInt(placar1.getText().toString());
+        partidaAtualizada.placarJogador2 = Integer.parseInt(placar2.getText().toString());
+
+        db.partidaDao().atualizar(partidaAtualizada);
+        Toast.makeText(requireContext(), "Partida atualizada", Toast.LENGTH_SHORT).show();
+
+        limparCampos();
+        carregarTodasPartidas();
+    }
+
+    private void excluirPartida() {
+        if (idPartidaSelecionada == null) {
+            Toast.makeText(requireContext(), "Nenhuma partida selecionada", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Partida partidaParaExcluir = new Partida();
+        partidaParaExcluir.idPartida = idPartidaSelecionada;
+
+        db.partidaDao().deletar(partidaParaExcluir);
+        Toast.makeText(requireContext(), "Partida excluída", Toast.LENGTH_SHORT).show();
+
+        limparCampos();
+        carregarTodasPartidas();
+    }
+
+    private void buscarPartidas() {
+        String textoBusca = filtro.getText().toString();
+        Jogador jogador = db.jogadorDao().buscarPorNomeOuNickname(textoBusca);
+
+        if (jogador != null) {
+            listaPartidasAtual = db.partidaDao().listarPorJogador(jogador.idJogador);
+            partidasAdapter.clear();
+            partidasAdapter.addAll(listaPartidasAtual);
+            partidasAdapter.notifyDataSetChanged();
+        } else {
+            Toast.makeText(requireContext(), "Jogador não encontrado", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private boolean validarCampos() {
+        if (spinnerJogador1.getSelectedItemPosition() == spinnerJogador2.getSelectedItemPosition()) {
+            Toast.makeText(requireContext(), "Jogadores devem ser diferentes", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (data.getText().toString().isEmpty() ||
+                placar1.getText().toString().isEmpty() ||
+                placar2.getText().toString().isEmpty()) {
+            Toast.makeText(requireContext(), "Preencha todos os campos", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        return true;
+    }
+
     private void limparCampos() {
+        idPartidaSelecionada = null;
         data.setText("");
         placar1.setText("");
         placar2.setText("");
         spinnerJogador1.setSelection(0);
         spinnerJogador2.setSelection(0);
         filtro.setText("");
+
+        btnSalvar.setEnabled(true);
+        btnAtualizar.setEnabled(false);
+        btnExcluir.setEnabled(false);
     }
 }

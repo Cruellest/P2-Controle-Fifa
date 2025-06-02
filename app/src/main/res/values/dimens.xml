@@ -1,0 +1,28 @@
+<resources>
+    <!-- Base values -->
+    <dimen name="screen_padding">16dp</dimen>
+    <dimen name="card_padding">16dp</dimen>
+    <dimen name="list_padding">8dp</dimen>
+    <dimen name="small_padding">4dp</dimen>
+    <dimen name="medium_padding">8dp</dimen>
+
+    <!-- Margins -->
+    <dimen name="small_margin">8dp</dimen>
+    <dimen name="medium_margin">12dp</dimen>
+    <dimen name="large_margin">16dp</dimen>
+
+    <!-- Button dimensions -->
+    <dimen name="button_height">48dp</dimen>
+    <dimen name="button_margin">4dp</dimen>
+
+    <!-- Card dimensions -->
+    <dimen name="card_elevation">2dp</dimen>
+    <dimen name="card_corner_radius">8dp</dimen>
+
+    <!-- Text sizes -->
+    <dimen name="title_text_size">24sp</dimen>
+    <dimen name="subtitle_text_size">18sp</dimen>
+
+    <!-- List dimensions -->
+    <dimen name="list_height">400dp</dimen>
+</resources>

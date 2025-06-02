@@ -3,55 +3,57 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:attr/colorBackground">
+    android:background="?android:attr/colorBackground"
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="24dp">
+        android:padding="@dimen/screen_padding">
 
         <!-- Cabeçalho -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Registro de Partidas"
-            android:textSize="24sp"
+            android:text="@string/titulo_partidas"
+            android:textSize="@dimen/title_text_size"
             android:textColor="?android:attr/textColorPrimary"
             android:textStyle="bold"
             android:gravity="center"
-            android:layout_marginBottom="16dp"/>
+            android:layout_marginBottom="@dimen/large_margin"
+            android:paddingTop="@dimen/medium_padding"/>
 
         <!-- Card de Dados da Partida -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardElevation="2dp"
-            app:cardCornerRadius="8dp"
+            android:layout_marginBottom="@dimen/large_margin"
+            app:cardElevation="@dimen/card_elevation"
+            app:cardCornerRadius="@dimen/card_corner_radius"
             app:cardBackgroundColor="?android:attr/colorBackgroundFloating">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="@dimen/card_padding">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="DADOS DA PARTIDA"
+                    android:text="@string/dados_partida"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textStyle="bold"
-                    android:layout_marginBottom="8dp"/>
+                    android:layout_marginBottom="@dimen/medium_margin"/>
 
                 <!-- Data da Partida -->
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:hint="DD/MM/AAAA"
+                    android:layout_marginBottom="@dimen/medium_margin"
+                    android:hint="@string/data_partida"
                     app:boxStrokeColor="?android:attr/colorPrimary"
                     app:hintTextColor="?android:attr/colorPrimary">
 
@@ -67,15 +69,15 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Jogador 1"
+                    android:text="@string/jogador_1"
                     android:textColor="?android:attr/textColorPrimary"
-                    android:layout_marginTop="8dp"/>
+                    android:layout_marginTop="@dimen/small_margin"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="@dimen/medium_margin"
                     app:boxStrokeColor="?android:attr/colorPrimary"
                     app:hintTextColor="?android:attr/colorPrimary">
 
@@ -89,8 +91,8 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:hint="Placar Jogador 1"
+                    android:layout_marginBottom="@dimen/medium_margin"
+                    android:hint="@string/placar_jogador_1"
                     app:boxStrokeColor="?android:attr/colorPrimary"
                     app:hintTextColor="?android:attr/colorPrimary">
 
@@ -106,15 +108,15 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Jogador 2"
+                    android:text="@string/jogador_2"
                     android:textColor="?android:attr/textColorPrimary"
-                    android:layout_marginTop="8dp"/>
+                    android:layout_marginTop="@dimen/small_margin"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="@dimen/medium_margin"
                     app:boxStrokeColor="?android:attr/colorPrimary"
                     app:hintTextColor="?android:attr/colorPrimary">
 
@@ -128,8 +130,8 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:hint="Placar Jogador 2"
+                    android:layout_marginBottom="@dimen/small_margin"
+                    android:hint="@string/placar_jogador_2"
                     app:boxStrokeColor="?android:attr/colorPrimary"
                     app:hintTextColor="?android:attr/colorPrimary">
 
@@ -148,79 +150,86 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="@dimen/large_margin"
             android:weightSum="2">
 
             <Button
                 android:id="@+id/btnSalvarPartida"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/button_height"
                 android:layout_weight="1"
-                android:layout_marginEnd="6dp"
-                android:text="Salvar"/>
+                android:layout_marginEnd="@dimen/button_margin"
+                android:text="@string/salvar"
+                android:backgroundTint="?android:attr/colorPrimary"
+                android:textColor="@android:color/white"/>
 
             <Button
                 android:id="@+id/btnAtualizarPartida"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/button_height"
                 android:layout_weight="1"
-                android:layout_marginStart="6dp"
-                android:text="Atualizar"/>
+                android:layout_marginStart="@dimen/button_margin"
+                android:text="@string/atualizar"
+                android:backgroundTint="?android:attr/colorPrimary"
+                android:textColor="@android:color/white"/>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="@dimen/large_margin"
             android:weightSum="2">
 
             <Button
                 android:id="@+id/btnExcluirPartida"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/button_height"
                 android:layout_weight="1"
-                android:layout_marginEnd="6dp"
-                android:text="Excluir"/>
+                android:layout_marginEnd="@dimen/button_margin"
+                android:text="@string/excluir"
+                android:textColor="@android:color/white"/>
 
             <Button
                 android:id="@+id/btnLimparPartida"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/button_height"
                 android:layout_weight="1"
-                android:layout_marginStart="6dp"
-                android:text="Limpar"/>
+                android:layout_marginStart="@dimen/button_margin"
+                android:text="@string/limpar"
+                android:backgroundTint="?android:attr/colorPrimary"
+                android:textColor="@android:color/white"/>
         </LinearLayout>
 
         <!-- Card de Busca -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardElevation="2dp"
-            app:cardCornerRadius="8dp"
+            android:layout_marginBottom="@dimen/large_margin"
+            app:cardElevation="@dimen/card_elevation"
+            app:cardCornerRadius="@dimen/card_corner_radius"
             app:cardBackgroundColor="?android:attr/colorBackgroundFloating">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="@dimen/card_padding">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="BUSCAR PARTIDAS"
+                    android:text="@string/buscar_partidas"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textStyle="bold"
-                    android:layout_marginBottom="8dp"/>
+                    android:layout_marginBottom="@dimen/medium_margin"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:hint="Digite o nickname"
+                    android:layout_marginBottom="@dimen/medium_margin"
+                    android:hint="@string/digite_nickname"
                     app:boxStrokeColor="?android:attr/colorPrimary"
                     app:hintTextColor="?android:attr/colorPrimary">
 
@@ -240,18 +249,22 @@
                     <Button
                         android:id="@+id/btnBuscar"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/button_height"
                         android:layout_weight="1"
-                        android:layout_marginEnd="6dp"
-                        android:text="Buscar"/>
+                        android:layout_marginEnd="@dimen/button_margin"
+                        android:text="@string/buscar"
+                        android:backgroundTint="?android:attr/colorPrimary"
+                        android:textColor="@android:color/white"/>
 
                     <Button
                         android:id="@+id/btnListarTodas"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/button_height"
                         android:layout_weight="1"
-                        android:layout_marginStart="6dp"
-                        android:text="Listar Todas"/>
+                        android:layout_marginStart="@dimen/button_margin"
+                        android:text="@string/listar_todas"
+                        android:backgroundTint="?android:attr/colorPrimary"
+                        android:textColor="@android:color/white"/>
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -260,16 +273,16 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="PARTIDAS REGISTRADAS"
+            android:text="@string/partidas_registradas"
             android:textColor="?android:attr/textColorPrimary"
             android:textStyle="bold"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="@dimen/medium_margin"/>
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="400dp"
-            app:cardElevation="2dp"
-            app:cardCornerRadius="8dp"
+            android:layout_height="@dimen/list_height"
+            app:cardElevation="@dimen/card_elevation"
+            app:cardCornerRadius="@dimen/card_corner_radius"
             app:cardBackgroundColor="?android:attr/colorBackgroundFloating">
 
             <ListView
@@ -278,7 +291,8 @@
                 android:layout_height="match_parent"
                 android:divider="?android:attr/listDivider"
                 android:dividerHeight="1dp"
-                android:padding="8dp"/>
+                android:padding="@dimen/list_padding"
+                android:fastScrollEnabled="true"/>
         </androidx.cardview.widget.CardView>
     </LinearLayout>
 </ScrollView>

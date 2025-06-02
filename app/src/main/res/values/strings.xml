@@ -1,3 +1,35 @@
 <resources>
     <string name="app_name">Controle Fifa</string>
+
+    <!-- Título da Tela -->
+    <string name="titulo_partidas">Partidas</string>
+
+    <!-- Seção de Dados da Partida -->
+    <string name="dados_partida">Dados da Partida</string>
+    <string name="data_partida">Data da Partida</string>
+    <string name="jogador_1">Jogador 1</string>
+    <string name="placar_jogador_1">Placar do Jogador 1</string>
+    <string name="jogador_2">Jogador 2</string>
+    <string name="placar_jogador_2">Placar do Jogador 2</string>
+
+    <!-- Botões de Ação -->
+    <string name="salvar">Salvar</string>
+    <string name="atualizar">Atualizar</string>
+    <string name="excluir">Excluir</string>
+    <string name="limpar">Limpar</string>
+
+    <!-- Seção de Busca -->
+    <string name="buscar_partidas">Buscar Partidas</string>
+    <string name="digite_nickname">Digite o nickname</string>
+    <string name="buscar">Buscar</string>
+    <string name="listar_todas">Listar Todas</string>
+    <string name="partidas_registradas">Partidas Registradas</string>
+
+    <string name="jogadores_diferentes">Selecione jogadores diferentes.</string>
+    <string name="preencha_todos_campos">Preencha todos os campos obrigatórios.</string>
+    <string name="partida_salva">Partida salva com sucesso!</string>
+    <string name="nenhuma_partida_selecionada">Nenhuma partida selecionada.</string>
+    <string name="partida_atualizada">Partida atualizada com sucesso!</string>
+    <string name="partida_excluida">Partida excluída com sucesso!</string>
+    <string name="jogador_nao_encontrado">Jogador não encontrado.</string>
 </resources>
