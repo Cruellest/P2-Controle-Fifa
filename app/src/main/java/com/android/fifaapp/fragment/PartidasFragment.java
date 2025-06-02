@@ -21,6 +21,7 @@ public class PartidasFragment extends Fragment {
     ListView listaPartidas;
     CampeonatoDatabase db;
     List<Jogador> jogadores;
+    Integer idPartidaSelecionada = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,6 +57,29 @@ public class PartidasFragment extends Fragment {
         spinnerJogador1.setAdapter(adapter);
         spinnerJogador2.setAdapter(adapter);
 
+        // Configurando a lista de partidas
+        listaPartidas.setOnItemClickListener((parent, view1, position, id) -> {
+            List<Partida> partidas = db.partidaDao().listarTodas();
+
+            if (position < partidas.size()) {
+                Partida partida = partidas.get(position);
+                idPartidaSelecionada = partida.idPartida;
+
+                data.setText(partida.data);
+                placar1.setText(String.valueOf(partida.placarJogador1));
+                placar2.setText(String.valueOf(partida.placarJogador2));
+
+                for (int i = 0; i < jogadores.size(); i++) {
+                    if (jogadores.get(i).idJogador == partida.idJogador1) {
+                        spinnerJogador1.setSelection(i);
+                    }
+                    if (jogadores.get(i).idJogador == partida.idJogador2) {
+                        spinnerJogador2.setSelection(i);
+                    }
+                }
+            }
+        });
+
         // Configuração do botão Salvar
         btnSalvar.setOnClickListener(v -> {
             int pos1 = spinnerJogador1.getSelectedItemPosition();
@@ -89,6 +113,61 @@ public class PartidasFragment extends Fragment {
         });
 
         btnLimpar.setOnClickListener(v -> limparCampos());
+
+        // Configurando botão de atualizar partidas
+        btnAtualizar.setOnClickListener(v -> {
+            if (idPartidaSelecionada == null) {
+                Toast.makeText(requireContext(), "Nenhuma partida selecionada", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            String dataPartida = data.getText().toString();
+            String placar1Str = placar1.getText().toString();
+            String placar2Str = placar2.getText().toString();
+
+            if (dataPartida.isEmpty() || placar1Str.isEmpty() || placar2Str.isEmpty()) {
+                Toast.makeText(requireContext(), "Preencha todos os campos", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            int pos1 = spinnerJogador1.getSelectedItemPosition();
+            int pos2 = spinnerJogador2.getSelectedItemPosition();
+
+            if (pos1 == pos2) {
+                Toast.makeText(requireContext(), "Jogadores devem ser diferentes", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            Partida partidaAtualizada = new Partida();
+            partidaAtualizada.idPartida = idPartidaSelecionada;
+            partidaAtualizada.data = dataPartida;
+            partidaAtualizada.idJogador1 = jogadores.get(pos1).idJogador;
+            partidaAtualizada.idJogador2 = jogadores.get(pos2).idJogador;
+            partidaAtualizada.placarJogador1 = Integer.parseInt(placar1Str);
+            partidaAtualizada.placarJogador2 = Integer.parseInt(placar2Str);
+
+            db.partidaDao().atualizar(partidaAtualizada);
+            Toast.makeText(requireContext(), "Partida atualizada", Toast.LENGTH_SHORT).show();
+
+            limparCampos();
+        });
+
+        // Configurando botão de deletar partidas
+        btnExcluir.setOnClickListener(v -> {
+            if (idPartidaSelecionada == null) {
+                Toast.makeText(requireContext(), "Nenhuma partida selecionada", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            Partida partidaParaExcluir = new Partida();
+            partidaParaExcluir.idPartida = idPartidaSelecionada;
+
+            db.partidaDao().deletar(partidaParaExcluir);
+            Toast.makeText(requireContext(), "Partida excluída", Toast.LENGTH_SHORT).show();
+
+            limparCampos();
+        });
+
 
         // Configuração do botão Buscar partidas de um jogador específico
         buscar.setOnClickListener(v -> {
@@ -128,6 +207,7 @@ public class PartidasFragment extends Fragment {
             }
 
             listaPartidas.setAdapter(partidasAdapter);
+
         });
 
 

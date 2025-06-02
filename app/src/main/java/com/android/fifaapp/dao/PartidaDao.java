@@ -26,4 +26,5 @@ public interface PartidaDao {
     @Query("SELECT * FROM Partida WHERE idJogador1 = :id OR idJogador2 = :id")
     List<Partida> listarPorJogador(int id);
 
+
 }
