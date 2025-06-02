@@ -1,152 +1,284 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="?android:attr/colorBackground">
 
     <LinearLayout
-        android:orientation="vertical"
-        android:padding="16dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
 
-        <!-- Dados da Partida -->
+        <!-- Cabeçalho -->
         <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="Data da Partida" />
-        <EditText
-            android:id="@+id/etDataPartida"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Ex: 01/06/2025" />
+            android:text="Registro de Partidas"
+            android:textSize="24sp"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginBottom="16dp"/>
 
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="Jogador 1" />
-        <Spinner
-            android:id="@+id/spinnerJogador1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="Placar Jogador 1" />
-        <EditText
-            android:id="@+id/etPlacarJogador1"
+        <!-- Card de Dados da Partida -->
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number" />
+            android:layout_marginBottom="16dp"
+            app:cardElevation="2dp"
+            app:cardCornerRadius="8dp"
+            app:cardBackgroundColor="?android:attr/colorBackgroundFloating">
 
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="Jogador 2" />
-        <Spinner
-            android:id="@+id/spinnerJogador2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
 
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="Placar Jogador 2" />
-        <EditText
-            android:id="@+id/etPlacarJogador2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="DADOS DA PARTIDA"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"/>
 
-        <!-- Botões principais -->
+                <!-- Data da Partida -->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:hint="DD/MM/AAAA"
+                    app:boxStrokeColor="?android:attr/colorPrimary"
+                    app:hintTextColor="?android:attr/colorPrimary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etDataPartida"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="date"
+                        android:textColor="?android:attr/textColorPrimary"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Jogador 1 -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Jogador 1"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:layout_marginTop="8dp"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    app:boxStrokeColor="?android:attr/colorPrimary"
+                    app:hintTextColor="?android:attr/colorPrimary">
+
+                    <Spinner
+                        android:id="@+id/spinnerJogador1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:hint="Placar Jogador 1"
+                    app:boxStrokeColor="?android:attr/colorPrimary"
+                    app:hintTextColor="?android:attr/colorPrimary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etPlacarJogador1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:textColor="?android:attr/textColorPrimary"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Jogador 2 -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Jogador 2"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:layout_marginTop="8dp"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    app:boxStrokeColor="?android:attr/colorPrimary"
+                    app:hintTextColor="?android:attr/colorPrimary">
+
+                    <Spinner
+                        android:id="@+id/spinnerJogador2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:hint="Placar Jogador 2"
+                    app:boxStrokeColor="?android:attr/colorPrimary"
+                    app:hintTextColor="?android:attr/colorPrimary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etPlacarJogador2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:textColor="?android:attr/textColorPrimary"/>
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Botões de Ação -->
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp">
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp"
+            android:weightSum="2">
 
             <Button
                 android:id="@+id/btnSalvarPartida"
-                android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Salvar" />
+                android:layout_weight="1"
+                android:layout_marginEnd="6dp"
+                android:text="Salvar"/>
 
             <Button
                 android:id="@+id/btnAtualizarPartida"
-                android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Atualizar" />
+                android:layout_weight="1"
+                android:layout_marginStart="6dp"
+                android:text="Atualizar"/>
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp"
+            android:weightSum="2">
 
             <Button
                 android:id="@+id/btnExcluirPartida"
-                android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Excluir" />
+                android:layout_weight="1"
+                android:layout_marginEnd="6dp"
+                android:text="Excluir"/>
 
             <Button
                 android:id="@+id/btnLimparPartida"
-                android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Limpar" />
+                android:layout_weight="1"
+                android:layout_marginStart="6dp"
+                android:text="Limpar"/>
         </LinearLayout>
 
-        <!-- Filtro por jogador -->
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Buscar partidas por nickname" />
-        <EditText
-            android:id="@+id/filtroNickname"
+        <!-- Card de Busca -->
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Digite o nickname" />
+            android:layout_marginBottom="16dp"
+            app:cardElevation="2dp"
+            app:cardCornerRadius="8dp"
+            app:cardBackgroundColor="?android:attr/colorBackgroundFloating">
 
-        <LinearLayout
-            android:orientation="horizontal"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="BUSCAR PARTIDAS"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:hint="Digite o nickname"
+                    app:boxStrokeColor="?android:attr/colorPrimary"
+                    app:hintTextColor="?android:attr/colorPrimary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/filtroNickname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="?android:attr/textColorPrimary"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <Button
+                        android:id="@+id/btnBuscar"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="6dp"
+                        android:text="Buscar"/>
+
+                    <Button
+                        android:id="@+id/btnListarTodas"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="6dp"
+                        android:text="Listar Todas"/>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Lista de Partidas -->
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
+            android:text="PARTIDAS REGISTRADAS"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
 
-            <Button
-                android:id="@+id/btnBuscar"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Buscar" />
-
-            <Button
-                android:id="@+id/btnListarTodas"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Listar Todas" />
-        </LinearLayout>
-
-        <!-- Lista de partidas -->
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Partidas Registradas" />
-        <ListView
-            android:id="@+id/listViewPartidas"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="400dp"
-            android:layout_marginTop="8dp"
-            android:divider="@android:color/darker_gray"
-            android:dividerHeight="1dp" />
+            app:cardElevation="2dp"
+            app:cardCornerRadius="8dp"
+            app:cardBackgroundColor="?android:attr/colorBackgroundFloating">
 
+            <ListView
+                android:id="@+id/listViewPartidas"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="?android:attr/listDivider"
+                android:dividerHeight="1dp"
+                android:padding="8dp"/>
+        </androidx.cardview.widget.CardView>
     </LinearLayout>
 </ScrollView>
