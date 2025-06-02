@@ -10,13 +10,14 @@ import com.android.fifaapp.R;
 import com.android.fifaapp.database.CampeonatoDatabase;
 import com.android.fifaapp.entity.Jogador;
 import com.android.fifaapp.entity.Partida;
+import java.util.Locale;
 
 import java.util.List;
 
 public class PartidasFragment extends Fragment {
     EditText data, placar1, placar2, filtro;
     Spinner spinnerJogador1, spinnerJogador2;
-    Button btnSalvar, btnAtualizar, btnExcluir, btnLimpar, buscar;
+    Button btnSalvar, btnAtualizar, btnExcluir, btnLimpar, buscar, btnListarTodas;
     ListView listaPartidas;
     CampeonatoDatabase db;
     List<Jogador> jogadores;
@@ -39,6 +40,7 @@ public class PartidasFragment extends Fragment {
 
         filtro = view.findViewById(R.id.filtroNickname);
         buscar = view.findViewById(R.id.btnBuscar);
+        btnListarTodas = view.findViewById(R.id.btnListarTodas);
         listaPartidas = view.findViewById(R.id.listViewPartidas);
 
         // Inicializando o banco de dados e obtendo os jogadores
@@ -103,6 +105,31 @@ public class PartidasFragment extends Fragment {
                 Toast.makeText(requireContext(), "Jogador não encontrado", Toast.LENGTH_SHORT).show();
             }
         });
+
+        btnListarTodas.setOnClickListener(v -> {
+            List<Partida> partidas = db.partidaDao().listarTodas();
+            ArrayAdapter<String> partidasAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1);
+
+            for (Partida p : partidas) {
+                Jogador j1 = db.jogadorDao().buscarPorId(p.idJogador1);
+                Jogador j2 = db.jogadorDao().buscarPorId(p.idJogador2);
+
+                String item = String.format(
+                        Locale.getDefault(),
+                        "%s - %s (%d) x (%d) %s",
+                        p.data,
+                        j1 != null ? j1.nickname : "N/A",
+                        p.placarJogador1,
+                        p.placarJogador2,
+                        j2 != null ? j2.nickname : "N/A"
+                );
+
+                partidasAdapter.add(item);
+            }
+
+            listaPartidas.setAdapter(partidasAdapter);
+        });
+
 
         return view;
     }

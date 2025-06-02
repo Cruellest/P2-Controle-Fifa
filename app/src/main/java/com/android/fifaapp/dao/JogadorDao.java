@@ -25,4 +25,8 @@ public interface JogadorDao {
 
     @Query("SELECT * FROM Jogador WHERE nickname = :texto OR nome = :texto LIMIT 1")
     Jogador buscarPorNomeOuNickname(String texto);
+
+    @Query("SELECT * FROM jogador WHERE idJogador = :id")
+    Jogador buscarPorId(int id);
+
 }

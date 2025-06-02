@@ -1,64 +1,83 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
 
     <LinearLayout
         android:orientation="vertical"
-        android:padding="16dp"
+        android:padding="20dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="#F9F9F9">
 
-        <EditText android:id="@+id/nome"
+        <EditText
+            android:id="@+id/nome"
             android:hint="Nome"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="48dp"
+            android:layout_marginBottom="8dp" />
 
-        <EditText android:id="@+id/nickname"
+        <EditText
+            android:id="@+id/nickname"
             android:hint="Nickname"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="48dp"
+            android:layout_marginBottom="8dp" />
 
-        <EditText android:id="@+id/email"
+        <EditText
+            android:id="@+id/email"
             android:hint="Email"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="48dp"
+            android:layout_marginBottom="8dp" />
 
-        <EditText android:id="@+id/dataNascimento"
+        <EditText
+            android:id="@+id/dataNascimento"
             android:hint="Data de Nascimento"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="48dp"
+            android:layout_marginBottom="16dp" />
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:weightSum="3"
+            android:gravity="center">
 
             <Button
                 android:id="@+id/btnSalvar"
                 android:text="Salvar"
                 android:layout_weight="1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content" />
+                android:layout_height="48dp"
+                android:layout_marginEnd="4dp" />
 
             <Button
                 android:id="@+id/btnAtualizar"
                 android:text="Atualizar"
                 android:layout_weight="1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content" />
+                android:layout_height="48dp"
+                android:layout_marginHorizontal="4dp" />
 
             <Button
                 android:id="@+id/btnDeletar"
                 android:text="Deletar"
                 android:layout_weight="1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content" />
+                android:layout_height="48dp"
+                android:layout_marginStart="4dp" />
         </LinearLayout>
 
         <ListView
             android:id="@+id/listViewJogadores"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp" />
+            android:layout_height="400dp"
+            android:layout_marginTop="8dp"
+            android:divider="@android:color/darker_gray"
+            android:dividerHeight="1dp" />
     </LinearLayout>
 </ScrollView>
+

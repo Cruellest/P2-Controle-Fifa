@@ -1,92 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="24dp">
+    android:layout_height="match_parent">
 
     <LinearLayout
+        android:orientation="vertical"
+        android:padding="16dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
+        <!-- Dados da Partida -->
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Data da Partida" />
         <EditText
             android:id="@+id/etDataPartida"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Data da Partida (DD/MM/AAAA)"
-            android:minHeight="48dp" />
+            android:hint="Ex: 01/06/2025" />
 
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Jogador 1" />
         <Spinner
             android:id="@+id/spinnerJogador1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="48dp" />
+            android:layout_height="wrap_content" />
 
-        <Spinner
-            android:id="@+id/spinnerJogador2"
-            android:layout_width="match_parent"
+        <TextView
             android:layout_height="wrap_content"
-            android:minHeight="48dp" />
-
+            android:layout_width="wrap_content"
+            android:text="Placar Jogador 1" />
         <EditText
             android:id="@+id/etPlacarJogador1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Placar Jogador 1"
-            android:inputType="number"
-            android:minHeight="48dp" />
+            android:inputType="number" />
 
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Jogador 2" />
+        <Spinner
+            android:id="@+id/spinnerJogador2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="Placar Jogador 2" />
         <EditText
             android:id="@+id/etPlacarJogador2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Placar Jogador 2"
-            android:inputType="number"
-            android:minHeight="48dp" />
+            android:inputType="number" />
 
-        <Button
-            android:id="@+id/btnSalvarPartida"
+        <!-- Botões principais -->
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Salvar"
-            android:layout_marginTop="16dp" />
+            android:layout_marginTop="12dp">
 
-        <Button
-            android:id="@+id/btnLimparPartida"
+            <Button
+                android:id="@+id/btnSalvarPartida"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Salvar" />
+
+            <Button
+                android:id="@+id/btnAtualizarPartida"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Atualizar" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Limpar Campos" />
+            android:layout_marginTop="8dp">
 
-        <Button
-            android:id="@+id/btnAtualizarPartida"
-            android:layout_width="match_parent"
+            <Button
+                android:id="@+id/btnExcluirPartida"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Excluir" />
+
+            <Button
+                android:id="@+id/btnLimparPartida"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Limpar" />
+        </LinearLayout>
+
+        <!-- Filtro por jogador -->
+        <TextView
             android:layout_height="wrap_content"
-            android:text="Atualizar Partida" />
-
-        <Button
-            android:id="@+id/btnExcluirPartida"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Excluir Partida" />
-
-
-
+            android:layout_width="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Buscar partidas por nickname" />
         <EditText
             android:id="@+id/filtroNickname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Buscar partidas de um jogador"
-            android:minHeight="48dp" />
+            android:hint="Digite o nickname" />
 
-        <Button
-            android:id="@+id/btnBuscar"
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Buscar Partidas" />
+            android:layout_marginTop="8dp">
 
+            <Button
+                android:id="@+id/btnBuscar"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Buscar" />
+
+            <Button
+                android:id="@+id/btnListarTodas"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Listar Todas" />
+        </LinearLayout>
+
+        <!-- Lista de partidas -->
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Partidas Registradas" />
         <ListView
             android:id="@+id/listViewPartidas"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="400dp"
+            android:layout_marginTop="8dp"
+            android:divider="@android:color/darker_gray"
+            android:dividerHeight="1dp" />
+
     </LinearLayout>
 </ScrollView>
