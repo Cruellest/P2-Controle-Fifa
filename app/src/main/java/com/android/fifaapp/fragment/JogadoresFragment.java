@@ -71,6 +71,8 @@ public class JogadoresFragment extends Fragment {
 
         // Salvar
         salvar.setOnClickListener(v -> {
+            if (validarCampos() && db.jogadorDao().buscarPorNomeOuNickname(nickname.getText().toString()) == null){
+
             Jogador j = new Jogador();
             j.nome = nome.getText().toString();
             j.nickname = nickname.getText().toString();
@@ -79,11 +81,13 @@ public class JogadoresFragment extends Fragment {
             db.jogadorDao().inserir(j);
             Toast.makeText(getContext(), "Jogador salvo", Toast.LENGTH_SHORT).show();
             carregarJogadores();
-            limparCampos();
+            limparCampos();}
         });
 
         // Atualizar
         atualizar.setOnClickListener(v -> {
+            if(validarCampos()){
+
             Jogador j = db.jogadorDao().buscarPorNomeOuNickname(nickname.getText().toString());
             if (j != null) {
                 j.nome = nome.getText().toString();
@@ -94,17 +98,19 @@ public class JogadoresFragment extends Fragment {
                 carregarJogadores();
                 limparCampos();
             }
-        });
+        }});
 
         // Deletar
         deletar.setOnClickListener(v -> {
+            if (!validarCampos()){
+
             Jogador j = db.jogadorDao().buscarPorNomeOuNickname(nickname.getText().toString());
             if (j != null) {
                 db.jogadorDao().deletar(j);
                 Toast.makeText(getContext(), "Jogador deletado", Toast.LENGTH_SHORT).show();
                 carregarJogadores();
                 limparCampos();
-            }
+            }}
         });
     }
 
@@ -122,5 +128,16 @@ public class JogadoresFragment extends Fragment {
         nickname.setText("");
         email.setText("");
         dataNascimento.setText("");
+    }
+
+    private boolean validarCampos() {
+        if (nome.getText().toString().isEmpty() || nickname.getText().toString().isEmpty() || email.getText().toString().isEmpty() || dataNascimento.getText().toString().isEmpty()) {
+
+            Toast.makeText(requireContext(), "Preencha todos os campos", Toast.LENGTH_SHORT).show();
+
+            return false;
+
+        }
+        return true;
     }
 }
